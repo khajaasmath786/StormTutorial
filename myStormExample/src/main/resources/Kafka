@@ -1,0 +1,42 @@
+Download Kafka froom here https://www.apache.org/dyn/closer.cgi?path=/kafka/0.8.1.1/kafka_2.9.2-0.8.1.1.tgz
+
+No additonal configuration is required
+
+*******kafta/bin/config/zookeeper.properties --> Change the port number to 2180 if it is already in use in zookeper.properties and server.properties
+
+****kafka/bin/config/server.properties --> this has details of the port that will be used by producer for publishing messages. (9092 port number)
+
+Youtube : https://www.youtube.com/watch?v=ArUHr3Czx-8 
+
+
+1. Start ZooKeeper  --> Note its shell script so it should be exeuted as ./ if from same folder else use /etc
+
+ bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
+2. Start Kafka Cluster
+
+bin/kafka-server-start.sh config/server.properties
+
+
+3. Create Topic -- Optional but can be done at runtime
+
+bin/kafka-topics.sh --create --zookeeper localhost:2180 --replication-factor 1 --partition 1 --topic truckevent
+
+We can now see that topic if we run the list topic command:
+
+> bin/kafka-list-topic.sh --zookeeper localhost:2180
+
+
+4. Produce message
+
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic truckevent
+
+
+5. Consume message
+
+bin/kafka-console-consumer.sh --zookeeper localhost:2180 --topic truckevent --from-beginning
+
+[2010-11-21 23:45:02,335] INFO Reading configuration from: config/zookeeper.properties
+
+Type some text in producer console and see if it is visible in consumer console.
